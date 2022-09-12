@@ -1,6 +1,5 @@
 -- COMANDO PARA ATUALIZAR (UPDATE)
 
-update tb_usuario
-	set email_usuario = 'ana@hotmail.com',
-		senha_usuario = 'ana123'
-	where id_usuario = 1;
+update tb_categoria
+	set nome_categoria = 'Alimentaçao no Shopping'
+	where id_categoria = 1;

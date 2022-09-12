@@ -1,5 +1,8 @@
 <?php
 
+require_once '../DAO/UtilDAO.php';
+UtilDAO::VerificarLogado();
+
 require_once '../DAO/ContaDAO.php';
 
 if (isset($_POST['btnCadastrar'])) {
@@ -43,19 +46,19 @@ include_once '_head.php';
                 <form action="nova_conta.php" method="post">
                     <div id="divConta_1" class="form-group">
                         <label>Nome do banco*</label>
-                        <input class="form-control" placeholder="Digite o nome do banco.. " id="nome_banco" name="nome_banco" />
+                        <input class="form-control" placeholder="Digite o nome do banco.. " id="nome_banco" name="nome_banco" maxlength="20" />
                     </div>
                     <div id="divConta_2" class="form-group">
                         <label>Agência*</label>
-                        <input class="form-control" placeholder="Digite a agência" id="agencia" name="agencia" />
+                        <input class="form-control" placeholder="Digite a agência" id="agencia" name="agencia" maxlength="8" />
                     </div>
                     <div id="divConta_3" class="form-group">
                         <label>Número da conta*</label>
-                        <input class="form-control" placeholder="Digite o número da conta" id="numero_conta" name="numero_conta" />
+                        <input class="form-control" placeholder="Digite o número da conta" id="numero_conta" name="numero_conta" maxlength="12" />
                     </div>
                     <div id="divConta_4" class="form-group">
                         <label>Saldo*</label>
-                        <input class="form-control" placeholder="Digite o saldo da conta" id="saldo" name="saldo" />
+                        <input class="form-control" placeholder="Digite o saldo da conta" id="saldo" name="saldo" maxlength="10"/>
                     </div>
                     <button type="submit" onclick="return ValidarConta()" class="btn btn-success" name="btnCadastrar">Cadastrar</button>
                 </form>

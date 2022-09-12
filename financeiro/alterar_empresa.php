@@ -1,15 +1,44 @@
 <?php
 
+require_once '../DAO/UtilDAO.php';
+UtilDAO::VerificarLogado();
+
 require_once '../DAO/EmpresaDAO.php';
 
-if (isset($_POST['btnSalvar'])) {
-    $empresa = $_POST['empresa'];
-    $telefone = $_POST['telefone'];
-    $endereco = $_POST['endereco'];
+$objDAO = new EmpresaDAO();
 
-    $objDAO = new EmpresaDAO();
+if (isset($_GET['cod']) && is_numeric($_GET['cod'])) {
 
-    $ret = $objDAO->AlterarEmpresa($empresa, $telefone, $endereco);
+    $id_empresa = $_GET['cod'];
+
+    $dados = $objDAO->DetalharEmpresa($id_empresa);
+
+    if (count($dados) == 0) {
+        header('location: consultar_empresa.php');
+        exit;
+    }
+} elseif (isset($_POST['btnSalvar'])) {
+
+    $id_empresa = $_POST['cod'];
+    $nome_empresa = $_POST['nome_empresa'];
+    $telefone_empresa = $_POST['telefone_empresa'];
+    $endereco_empresa = $_POST['endereco_empresa'];
+
+    $ret = $objDAO->AlterarEmpresa($id_empresa, $nome_empresa, $telefone_empresa, $endereco_empresa);
+
+    header('location: consultar_empresa.php?ret=' . $ret);
+    exit;
+} elseif (isset($_POST['btnExcluir'])) {
+
+    $id_empresa = $_POST['cod'];
+
+    $ret = $objDAO->ExcluirEmpresa($id_empresa);
+
+    header('location: consultar_empresa.php?ret=' . $ret);
+    exit;
+} else {
+    header('location: consultar_empresa.php');
+    exit;
 }
 
 ?>
@@ -40,20 +69,39 @@ include_once '_head.php';
                 <!-- /. ROW  -->
                 <hr />
                 <form action="alterar_empresa.php" method="post">
+                    <input type="hidden" name="cod" value="<?= $dados[0]['id_empresa'] ?>">
                     <div class="form-group" id="divEmpresa">
                         <label>Nome da Empresa*</label>
-                        <input class="form-control" placeholder="Digite o nome da empresa.. " id="nome" name="empresa" />
+                        <input class="form-control" placeholder="Digite o nome da empresa.. " id="nome_empresa" name="nome_empresa" maxlength="50" value="<?= $dados[0]['nome_empresa'] ?>" />
                     </div>
                     <div class="form-group">
                         <label>Telefone</label>
-                        <input class="form-control" placeholder="Digite o telefone da empresa (opcional) " name="telefone" />
+                        <input class="form-control" placeholder="Digite o telefone da empresa (opcional) " id="telefone_empresa" name="telefone_empresa" maxlength="11" value="<?= $dados[0]['telefone_empresa'] ?>" />
                     </div>
                     <div class="form-group">
                         <label>Endereço</label>
-                        <input class="form-control" placeholder="Digite o endereço da empresa (opcional)" name="endereco" />
+                        <input class="form-control" placeholder="Digite o endereço da empresa (opcional)" id="endereco_empresa" name="endereco_empresa" maxlength="100" value="<?= $dados[0]['endereco_empresa'] ?>" />
                     </div>
                     <button type="submit" onclick="return ValidarEmpresa()" name="btnSalvar" class="btn btn-success">Salvar</button>
-                    <button type="submit" name="btnExcluir" class="btn btn-danger">Excluir</button>
+                    <button type="button" data-toggle="modal" data-target="#modal_excluir" class="btn btn-danger">Excluir</button>
+
+                    <div class="modal fade" id="modal_excluir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">Confiirmação de exclusão</h4>
+                                </div>
+                                <div class="modal-body">
+                                    Deseja excluir a empresa: <b><?= $dados[0]['nome_empresa'] ?> ?</b>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" name="btnExcluir" class="btn btn-primary">Confirmar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>
 
             </div>

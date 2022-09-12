@@ -1,5 +1,8 @@
 <?php
 
+require_once '../DAO/UtilDAO.php';
+UtilDAO::VerificarLogado();
+
 require_once '../DAO/CategoriaDAO.php';
 
 if (isset($_POST['btnGravar'])) {
@@ -42,7 +45,7 @@ include_once '_head.php';
                 <form action="nova_categoria.php" method="post">
                     <div class="form-group" id="divCategoria">
                         <label>Nome da Categoria</label>
-                        <input class="form-control" name="nome_categoria" id="nome_categoria" placeholder="Digite o nome da categoria.. Ex: conta de luz" />
+                        <input class="form-control" name="nome_categoria" id="nome_categoria" placeholder="Digite o nome da categoria.. Ex: conta de luz" maxlength="35" />
                     </div>
                     <button type="submit" onclick="return ValidarCategoria()" name="btnGravar" class="btn btn-success">Cadastrar</button>
                 </form>

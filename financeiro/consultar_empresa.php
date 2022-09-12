@@ -1,3 +1,38 @@
+<?php
+
+require_once '../DAO/UtilDAO.php';
+UtilDAO::VerificarLogado();
+
+require_once '../DAO/EmpresaDAO.php';
+
+$opcao = '';
+
+$objDAO = new EmpresaDAO();
+
+if (isset($_POST['btnPesquisar'])) {
+
+    $opcao = $_POST['filtro'];
+    $empresas = $objDAO->FiltrarEmpresa($opcao);
+    switch ($opcao) {
+        case 'nome_empresa':
+            $filtrar = $_POST['filtrar'];
+            $empresas = $objDAO->FiltrarEmpresa($filtrar);
+            break;
+        case 'telefone_empresa':
+            $filtrar = $_POST['filtrar'];
+            $empresas = $objDAO->FiltrarTelefone($filtrar);
+            break;
+        case 'endereco_empresa':
+            $filtrar = $_POST['filtrar'];
+            $empresas = $objDAO->FiltrarEndereco($filtrar);
+            break;
+    }
+} else {
+    $empresas = $objDAO->ConsultarEmpresa();
+}
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -16,6 +51,7 @@ include_once '_head.php';
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
+                        <?php include_once '_msg.php' ?>
                         <h2>Consultar Empresa</h2>
                         <h5>Consulte todas suas empresas aqui</h5>
 
@@ -24,7 +60,25 @@ include_once '_head.php';
                 <!-- /. ROW  -->
                 <hr />
 
-
+                <form action="consultar_empresa.php" method="post">
+                    <div class="form-group" id="divEmpresa">
+                        <center>
+                            <label>Procurar por:</label>
+                            <select class="btn btn-default dropdown-toggle" name="filtro">
+                                <option value="">Selecione a opção</option>
+                                <option value="nome_empresa" <?= $opcao == 'nome_empresa' ? 'selected' : '' ?>>Nome</option>
+                                <option value="telefone_empresa" <?= $opcao == 'telefone_empresa' ? 'selected' : '' ?>>Telefone</option>
+                                <option value="endereco_empresa" <?= $opcao == 'endereco_empresa' ? 'selected' : '' ?>>Endereço</option>
+                            </select>
+                        </center>
+                        <br>
+                        <input class="form-control" name="filtrar" id="filtrar" placeholder="Digite aqui..." value="<?= isset($filtrar) ? $filtrar : '' ?>" />
+                    </div>
+                    <center>
+                        <button type="submit" onclick="return ValidarEmpresa()" name="btnPesquisar" class="btn btn-info">Pesquisar</button>
+                    </center>
+                </form>
+                <br>
                 <div class="row">
                     <div class="col-md-12">
                         <!-- Advanced Tables -->
@@ -44,16 +98,17 @@ include_once '_head.php';
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="odd gradeX">
-                                                <td>(nome)</td>
-                                                <td>(telefone)</td>
-                                                <td>(endereço)</td>
-                                                <td>
-                                                    <a href="alterar_empresa.php" class="btn btn-warning btn-sm">Alterar</a>
-                                                </td>
+                                            <?php foreach ($empresas as $item) { ?>
+                                                <tr class="odd gradeX">
+                                                    <td><?= $item['nome_empresa'] ?></td>
+                                                    <td><?= $item['telefone_empresa'] ?></td>
+                                                    <td><?= $item['endereco_empresa'] ?></td>
+                                                    <td>
+                                                        <a href="alterar_empresa.php?cod=<?= $item['id_empresa'] ?>" class="btn btn-warning btn-sm">Alterar</a>
+                                                    </td>
 
-                                            </tr>
-
+                                                </tr>
+                                            <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>

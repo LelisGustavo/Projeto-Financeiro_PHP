@@ -51,19 +51,19 @@ include_once '_head.php';
                                 <br />
                                 <div class="form-group input-group" id="divCadastro_1">
                                     <span class="input-group-addon"><i class="fa fa-circle-o-notch"></i></span>
-                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu nome" />
+                                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Seu nome" maxlength="50" />
                                 </div>
                                 <div class="form-group input-group" id="divCadastro_2">
                                     <span class="input-group-addon">@</span>
-                                    <input type="text" class="form-control" id="email" name="email" placeholder="Seu e-mail" />
+                                    <input type="text" class="form-control" id="email" name="email" placeholder="Seu e-mail" maxlength="50" />
                                 </div>
                                 <div class="form-group input-group" id="divCadastro_3">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" id="senha" name="senha" placeholder="Crie uma senha (mínimo 6 caracteres)" />
+                                    <input type="password" class="form-control" id="senha" name="senha" placeholder="Crie uma senha (mínimo 6 caracteres)" maxlength="12" />
                                 </div>
                                 <div class="form-group input-group" id="divCadastro_4">
                                     <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                    <input type="password" class="form-control" id="repetir_senha" name="repetir_senha" placeholder="Repita a senha criada" />
+                                    <input type="password" class="form-control" id="repetir_senha" name="repetir_senha" placeholder="Repita a senha criada" maxlength="12" />
                                 </div>
 
                                 <button class="btn btn-success" onclick="return ValidarCadastro()" name="btnCadastrar">Finalizar cadastro</button>

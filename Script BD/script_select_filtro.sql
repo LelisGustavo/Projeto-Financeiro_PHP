@@ -134,5 +134,11 @@ inner join tb_usuario
 	and tb_movimento.tipo_movimento = 1;
     
          
-         
-	
+
+select tb_categoria.id_usuario,
+		nome_categoria,
+        nome_usuario
+	from tb_categoria
+inner join tb_usuario
+	on tb_usuario.id_usuario = tb_categoria.id_usuario
+    where tb_categoria.id_usuario = 1;

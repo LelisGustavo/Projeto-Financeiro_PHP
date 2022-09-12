@@ -43,11 +43,11 @@ include_once '_head.php';
                             <br />
                             <div class="form-group input-group" id="divLogin_1">
                                 <span class="input-group-addon"><i class="fa fa-tag"></i></span>
-                                <input type="text" class="form-control" placeholder="Seu e-mail" id="email" name="email" />
+                                <input type="text" class="form-control" placeholder="Seu e-mail" id="email" name="email" maxlength="50" />
                             </div>
                             <div class="form-group input-group" id="divLogin_2">
                                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                <input type="password" class="form-control" placeholder="Sua senha" id="senha" name="senha" />
+                                <input type="password" class="form-control" placeholder="Sua senha" id="senha" name="senha" maxlength="12" />
                             </div>
 
                             <button class="btn btn-primary" onclick="return ValidarLogin()" name="btnAcessar">Acessar</button>

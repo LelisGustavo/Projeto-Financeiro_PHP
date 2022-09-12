@@ -143,20 +143,56 @@ function ValidarMovimento() {
 
 function ValidarConsultaPeriodo() {
 
-    if ($("#data_inicial").val().trim() == '') {
+    if ($("#tipo_movimento").val().trim() == '') {
         alert("Preencher os campos em vermelho/vazio!");
-        $("#data_inicial").focus();
+        $("#tipo_movimento").focus();
         $("#divMovimento_1").addClass("has-error");
     } else {
         $("#divMovimento_1").removeClass("has-error").addClass("has-success");
     }
 
-    if ($("#data_final").val().trim() == '' ) {
-        alert("Preencher os campos em vermelho/vazio");
-        $("#data_final").focus();
+    if ($("#data_inicial").val().trim() == '') {
+        alert("Preencher os campos em vermelho/vazio!");
+        $("#data_inicial").focus();
         $("#divMovimento_2").addClass("has-error");
     } else {
         $("#divMovimento_2").removeClass("has-error").addClass("has-success");
+    }
+
+    if ($("#data_final").val().trim() == '') {
+        alert("Preencher os campos em vermelho/vazio");
+        $("#data_final").focus();
+        $("#divMovimento_3").addClass("has-error");
+    } else {
+        $("#divMovimento_3").removeClass("has-error").addClass("has-success");
+    }
+}
+
+function ValidarConsultaPeriodoEmpresa() {
+
+    if ($("#empresa").val().trim() == '') {
+        alert("Preencher os campos em vermelho/vazio!");
+        $("#empresa").focus();
+        $("#divEmpresa").addClass("has-error");
+        return false;
+    } else {
+        $("#divEmpresa").removeClass("has-error").addClass("has-success");
+    }
+
+    if ($("#data_inicial").val().trim() == '') {
+        alert("Preencher os campos em vermelho/vazio!");
+        $("#data_inicial").focus();
+        $("#divMovimento_2").addClass("has-error");
+    } else {
+        $("#divMovimento_2").removeClass("has-error").addClass("has-success");
+    }
+
+    if ($("#data_final").val().trim() == '') {
+        alert("Preencher os campos em vermelho/vazio");
+        $("#data_final").focus();
+        $("#divMovimento_3").addClass("has-error");
+    } else {
+        $("#divMovimento_3").removeClass("has-error").addClass("has-success");
     }
 }
 
@@ -183,7 +219,7 @@ function ValidarLogin() {
 
 function ValidarCadastro() {
 
-    if ( $("#nome").val().trim() == '' ) {
+    if ($("#nome").val().trim() == '') {
         alert("Preencher os campos em vermelho/vazio!");
         $("#nome").focus();
         $("#divCadastro_1").addClass("has-error");
@@ -192,7 +228,7 @@ function ValidarCadastro() {
         $("#divCadastro_1").removeClass("has-error").addClass("has-success");
     }
 
-    if ( $("#email").val().trim() == '' ) {
+    if ($("#email").val().trim() == '') {
         alert("Preencher os campos em vermelho/vazio!");
         $("#email").focus();
         $("#divCadastro_2").addClass("has-error");
@@ -201,7 +237,7 @@ function ValidarCadastro() {
         $("#divCadastro_2").removeClass("has-error").addClass("has-success");
     }
 
-    if ( $("#senha").val().trim() == '' ) {
+    if ($("#senha").val().trim() == '') {
         alert("Preencher os campos em vermelho/vazio!");
         $("#senha").focus();
         $("#divCadastro_3").addClass("has-error");
@@ -219,7 +255,7 @@ function ValidarCadastro() {
         $("#divCadastro_3").removeClass("has-error").addClass("has-success");
     }
 
-    if ( $("#senha").val().trim() != $("#repetir_senha").val().trim()) {
+    if ($("#senha").val().trim() != $("#repetir_senha").val().trim()) {
         alert("A senha e o Repitir Senha não estão iguais!");
         $("#repetir_senha").focus();
         $("#divCadastro_4").addClass("has-error");

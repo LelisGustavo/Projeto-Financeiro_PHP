@@ -9,3 +9,6 @@ select * from tb_empresa;
 select * from tb_conta;
 
 select * from tb_movimento;
+
+delete from tb_empresa
+	where id_empresa = 13;

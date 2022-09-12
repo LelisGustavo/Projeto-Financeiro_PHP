@@ -1,3 +1,13 @@
+<?php
+
+require_once '../DAO/UtilDAO.php';
+
+if (isset($_GET['close']) && $_GET['close'] == '1') {
+    UtilDAO::Deslogar();
+}
+
+?>
+
 <nav class="navbar-default navbar-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav" id="main-menu">
@@ -47,12 +57,15 @@
                     <li>
                         <a href="consultar_movimento.php">Consultar Movimento</a>
                     </li>
+                    <li>
+                        <a href="consultar_movimento_empresa.php">Consultar Movimento Empresa</a>
+                    </li>
                     
 
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-square-o fa-3x"></i> Sair</a>
+                <a href="_menu.php?close=1"><i class="fa fa-square-o fa-3x"></i> Sair</a>
             </li>
 
         </ul>

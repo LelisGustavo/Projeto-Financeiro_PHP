@@ -1,6 +1,12 @@
 <?php
 
+require_once '../DAO/UtilDAO.php';
+UtilDAO::VerificarLogado();
+
 require_once '../DAO/MovimentoDAO.php';
+require_once '../DAO/CategoriaDAO.php';
+require_once '../DAO/EmpresaDAO.php';
+require_once '../DAO/ContaDAO.php';
 
 if (isset($_POST['btnGravar'])) {
     $tipo_movimento = $_POST['tipo_movimento'];
@@ -15,6 +21,15 @@ if (isset($_POST['btnGravar'])) {
 
     $ret = $objDAO->RealizarMovimento($tipo_movimento, $data, $valor, $categoria, $empresa, $conta, $obs);
 }
+
+$objCatDAO = new CategoriaDAO();
+$categorias = $objCatDAO->ConsultarCategoria();
+
+$objEmpDAO = new EmpresaDAO();
+$empresas = $objEmpDAO->ConsultarEmpresa();
+
+$objConDAO = new ContaDAO();
+$contas = $objConDAO->ConsultarConta();
 
 ?>
 
@@ -34,8 +49,8 @@ include_once '_head.php';
         <div id="page-wrapper">
             <div id="page-inner">
                 <div class="row">
-                    <?php include_once '_msg.php'; ?>
                     <div class="col-md-12">
+                        <?php include_once '_msg.php'; ?>
                         <h2>Realizar Movimento</h2>
                         <h5>Aqui você poderá realizar seus movimentos de entrada ou saída</h5>
 
@@ -59,7 +74,7 @@ include_once '_head.php';
                         </div>
                         <div class="form-group" id="divMovimento_3">
                             <label>Valor*</label>
-                            <input class="form-control" id="valor" name="valor" placeholder="Digite o valor do movimento" />
+                            <input class="form-control" id="valor" name="valor" placeholder="Digite o valor do movimento" maxlength="10" />
                         </div>
                     </div>
 
@@ -68,25 +83,37 @@ include_once '_head.php';
                             <label>Categoria*</label>
                             <select class="form-control" id="categoria" name="categoria">
                                 <option value="">Selecione</option>
+                                <?php foreach ($categorias as $item) { ?>
+                                    <option value="<?= $item['id_categoria'] ?>"><?= $item['nome_categoria'] ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                         <div class="form-group" id="divMovimento_5">
                             <label>Empresa*</label>
                             <select class="form-control" id="empresa" name="empresa">
                                 <option value="">Selecione</option>
+                                <?php foreach ($empresas as $item) { ?>
+                                    <option value="<?= $item['id_empresa'] ?>">
+                                        <?= $item['nome_empresa'] ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                         <div class="form-group" id="divMovimento_6">
                             <label>Conta*</label>
                             <select class="form-control" id="conta" name="conta">
                                 <option value="">Selecione</option>
+                                <?php foreach ($contas as $item) { ?>
+                                    <option value="<?= $item['id_conta'] ?>">
+                                        <?= 'Banco: ' . $item['banco_conta'] . ' / Agência: ' . $item['agencia_conta']
+                                            . ' / Núm. Conta: ' . $item['numero_conta'] . ' / Saldo R$ ' . $item['saldo_conta'] ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Observação (opcional)</label>
-                            <textarea class="form-control" name="obs" rows="3"></textarea>
+                            <textarea class="form-control" name="obs" rows="3" maxlength="100"></textarea>
                         </div>
                         <button type="submit" onclick="return ValidarMovimento()" class="btn btn-success" name="btnGravar">Finalizar lançamento</button>
                     </div>

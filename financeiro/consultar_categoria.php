@@ -1,3 +1,24 @@
+<?php
+
+require_once '../DAO/UtilDAO.php';
+UtilDAO::VerificarLogado();
+
+require_once '../DAO/CategoriaDAO.php';
+
+$objDAO = new CategoriaDAO();
+
+if (isset($_POST['btnFiltrar'])) {
+    $filtrar_nome_categoria = $_POST['filtrar_nome_categoria'];
+    $categorias = $objDAO->FiltrarCategoria($filtrar_nome_categoria);
+} else if (isset($_GET['filtro']) && $_GET['filtro'] != '') {
+    $filtrar_nome_categoria = $_GET['filtro'];
+    $categorias = $objDAO->FiltrarCategoria($filtrar_nome_categoria);
+} else {
+    $categorias = $objDAO->ConsultarCategoria();
+}
+
+?>
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -16,6 +37,7 @@ include_once '_head.php';
             <div id="page-inner">
                 <div class="row">
                     <div class="col-md-12">
+                        <?php include_once '_msg.php' ?>
                         <h2>Consultar Categoria</h2>
                         <h5>Consulte todas suas categorias aqui</h5>
 
@@ -24,7 +46,16 @@ include_once '_head.php';
                 <!-- /. ROW  -->
                 <hr />
 
-
+                <form action="consultar_categoria.php" method="post">
+                    <div class="form-group" id="divCategoria">
+                        <label>Filtrar nome da Categoria</label>
+                        <input type="text" onkeyup="Filtrar(this.value)" class="form-control" name="filtrar_nome_categoria" id="filtrar_nome_categoria" placeholder="Digite aqui..." value="<?= isset($filtrar_nome_categoria) ? $filtrar_nome_categoria : '' ?>" />
+                    </div>
+                    <center>
+                        <button type="submit" onclick="return ValidarCategoria()" name="btnFiltrar" class="btn btn-info">Filtrar</button>
+                    </center>
+                </form>
+                <br>
                 <div class="row">
                     <div class="col-md-12">
                         <!-- Advanced Tables -->
@@ -42,14 +73,15 @@ include_once '_head.php';
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr class="odd gradeX">
-                                                <td>(nome)</td>
-                                                <td>
-                                                    <a href="alterar_categoria.php" class="btn btn-warning btn-sm">Alterar</a>
-                                                </td>
+                                            <?php for ($i = 0; $i < count($categorias); $i++) { ?>
+                                                <tr class="odd gradeX">
+                                                    <td><?= $categorias[$i]['nome_categoria'] ?></td>
+                                                    <td>
+                                                        <a href="alterar_categoria.php?cod=<?= $categorias[$i]['id_categoria'] ?>" class="btn btn-warning btn-sm">Alterar</a>
+                                                    </td>
 
-                                            </tr>
-
+                                                </tr>
+                                            <?php } ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -65,6 +97,17 @@ include_once '_head.php';
         </div>
         <!-- /. PAGE WRAPPER  -->
     </div>
+
+    <script>
+        function Filtrar(categoria) {
+
+            if (categoria.length > 2) {
+
+                window.location = "consultar_categoria.php?filtro=" + categoria;
+
+            }
+        }
+    </script>
 
 </body>
 

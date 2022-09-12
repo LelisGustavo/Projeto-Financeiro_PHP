@@ -78,7 +78,7 @@ values
 insert into tb_estado
 (nome_estado, uf_estado, id_pais)
 values
-('Minhas', 'MG', 1);
+('Minas', 'MG', 1);
 
 insert into tb_cidade
 (nome_cidade, id_estado)
@@ -125,14 +125,14 @@ values
 insert into tb_estado
 (nome_estado, uf_estado, id_pais)
 values
-('Londrina', 'PR', 1);
+('Paraná', 'PR', 1);
 
 insert into tb_cidade
 (nome_cidade, id_estado)
 values
-('Paraná', 4);
+('Londrina', 5);
 
 insert into tb_endereco
 (cep_endereco, rua_endereco, bairro_endereco, id_cliente, id_funcionario, id_contratante, id_cidade)
 values
-('987654321', 'Av Saul', 'Sebastião', 4, 5, 3, 3);
+('987654321', 'Av Saul', 'Sebastião', 4, 5, 3, 5);

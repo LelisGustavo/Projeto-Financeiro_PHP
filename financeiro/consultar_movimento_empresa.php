@@ -4,34 +4,27 @@ require_once '../DAO/UtilDAO.php';
 UtilDAO::VerificarLogado();
 
 require_once '../DAO/MovimentoDAO.php';
+require_once '../DAO/EmpresaDAO.php';
 
-$tipo_movimento = '';
+$empresa = '';
 
 if (isset($_POST['btnPesquisar'])) {
-    $tipo_movimento = $_POST['tipo_movimento'];
+    $empresa = $_POST['empresa'];
     $data_inicial = $_POST['data_inicial'];
     $data_final = $_POST['data_final'];
 
     $objDAO = new MovimentoDAO();
-    $movimentos = $objDAO->FiltrarMovimento($tipo_movimento, $data_inicial, $data_final);
+    $movimentos = $objDAO->ConsultarMovimentoEmpresa($empresa, $data_inicial, $data_final);
 
     if(!is_array($movimentos)) {
         $ret = $movimentos;
     } elseif (count($movimentos) == 0) {
         $ret = -5;
     }
-
-} elseif (isset($_POST['btnExcluir'])) {
-    $id_movimento = $_POST['id_movimento'];
-    $id_conta = $_POST['id_conta'];
-    $tipo_movimento = $_POST['tipo_movimento'];
-    $valor_movimento = $_POST['valor_movimento'];
-
-    $objDAO = new MovimentoDAO();
-    $ret = $objDAO->ExcluirMovimento($id_movimento, $id_conta, $valor_movimento, $tipo_movimento);
 }
 
-
+$objEmpDAO = new EmpresaDAO();
+$empresas = $objEmpDAO->ConsultarEmpresa();
 ?>
 
 <!DOCTYPE html>
@@ -53,21 +46,23 @@ include_once '_head.php';
                 <div class="row">
                     <div class="col-md-12">
                         <?php include_once '_msg.php'; ?>
-                        <h2>Consultar Movimento</h2>
-                        <h5>Consulte todos os movimentos em um determidado período</h5>
+                        <h2>Consultar Movimento por Empresas</h2>
+                        <h5>Consulte todos os movimentos por empresas em um determidado período</h5>
 
                     </div>
                 </div>
                 <!-- /. ROW  -->
                 <hr />
-                <form action="consultar_movimento.php" method="POST">
+                <form action="consultar_movimento_empresa.php" method="POST">
                     <div class="col-md-12">
-                        <div class="form-group" id="divMovimento_1">
-                            <label>Tipo do movimento</label>
-                            <select class="form-control" name="tipo_movimento" id="tipo_movimento">
-                                <option value="0" <?= $tipo_movimento == '0' ? 'selected' : '' ?>>TODOS</option>
-                                <option value="1" <?= $tipo_movimento == '1' ? 'selected' : '' ?>>Entrada</option>
-                                <option value="2" <?= $tipo_movimento == '2' ? 'selected' : '' ?>>Saída</option>
+                        <div class="form-group" id="divEmpresa">
+                            <label>Empresa*</label>
+                            <select class="form-control" id="empresa" name="empresa">
+                                <option value="">Selecione</option>
+                                <?php foreach ($empresas as $item) { ?>
+                                    <option value="<?= $item['id_empresa'] ?>">
+                                        <?= $item['nome_empresa'] ?> </option>
+                                <?php } ?>
                             </select>
                         </div>
                     </div>
@@ -85,11 +80,11 @@ include_once '_head.php';
                         </div>
                     </div>
                     <center>
-                        <button type="submit" class="btn btn-info" onclick="return ValidarConsultaPeriodo()" name="btnPesquisar">Pesquisar</button>
+                        <button type="submit" class="btn btn-info" onclick="return ValidarConsultaPeriodoEmpresa()" name="btnPesquisar">Pesquisar</button>
                     </center>
                 </form>
                 <hr>
-                <?php if (isset($movimentos) && is_array($movimentos) && count($movimentos) > 0) {?>
+                <?php if (isset($movimentos) && is_array($movimentos) && count($movimentos) > 0) { ?>
                     <div class="row">
                         <div class="col-md-12">
                             <!-- Advanced Tables -->
@@ -103,13 +98,9 @@ include_once '_head.php';
                                             <thead>
                                                 <tr>
                                                     <th>Data</th>
-                                                    <th>Tipo</th>
-                                                    <th>Categoria</th>
-                                                    <th>Empresa</th>
-                                                    <th>Conta</th>
                                                     <th>Valor</th>
+                                                    <th>Tipo</th>
                                                     <th>Observação</th>
-                                                    <th>Ação</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -125,11 +116,8 @@ include_once '_head.php';
                                                 ?>
                                                     <tr class="odd gradeX">
                                                         <td><?= $movimentos[$i]['data_movimento'] ?></td>
-                                                        <td><?= $movimentos[$i]['tipo_movimento'] == 1 ? 'Entrada' : 'Saída' ?></td>
-                                                        <td><?= $movimentos[$i]['nome_categoria'] ?></td>
-                                                        <td><?= $movimentos[$i]['nome_empresa'] ?></td>
-                                                        <td><?= $movimentos[$i]['banco_conta'] ?> / Agência <?= $movimentos[$i]['agencia_conta'] ?> - Número <?= $movimentos[$i]['numero_conta'] ?></td>
                                                         <td>R$ <?= number_format($movimentos[$i]['valor_movimento'], 2, ',', '.') ?></td>
+                                                        <td><?= $movimentos[$i]['tipo_movimento'] == 1 ? 'Entrada' : 'Saída' ?></td>
                                                         <td><?= $movimentos[$i]['obs_movimento'] ?></td>
                                                         <td>
                                                             <a href="#" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#modal_excluir<?= $i ?>">Excluir</a>
@@ -143,36 +131,36 @@ include_once '_head.php';
 
                                                                 <input type="hidden" name="valor_movimento" value="<?= $movimentos[$i]['valor_movimento'] ?>">
 
-                                                            <div class="modal fade" id="modal_excluir<?= $i ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                            <h4 class="modal-title" id="myModalLabel">Confiirmação de exclusão</h4>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <center><b>Deseja excluir o movimento:</b></center> <br><br>
+                                                                <div class="modal fade" id="modal_excluir<?= $i ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                    <div class="modal-dialog">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                                <h4 class="modal-title" id="myModalLabel">Confiirmação de exclusão</h4>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <center><b>Deseja excluir o movimento:</b></center> <br><br>
 
-                                                                            <b>Data do movimento: </b><?= $movimentos[$i]['data_movimento'] ?> <br>
+                                                                                <b>Data do movimento: </b><?= $movimentos[$i]['data_movimento'] ?> <br>
 
-                                                                            <b>Tipo do movimento: </b><?= $movimentos[$i]['tipo_movimento'] == 1 ? 'Entrada' : 'Saída' ?> <br>
+                                                                                <b>Tipo do movimento: </b><?= $movimentos[$i]['tipo_movimento'] == 1 ? 'Entrada' : 'Saída' ?> <br>
 
-                                                                            <b>Categoria: </b><?= $movimentos[$i]['nome_categoria'] ?> <br>
+                                                                                <b>Categoria: </b><?= $movimentos[$i]['nome_categoria'] ?> <br>
 
-                                                                            <b>Empresa: </b><?= $movimentos[$i]['nome_empresa'] ?> <br>
+                                                                                <b>Empresa: </b><?= $movimentos[$i]['nome_empresa'] ?> <br>
 
-                                                                            <b>Conta: </b><?= $movimentos[$i]['banco_conta'] ?> / Agência <?= $movimentos[$i]['agencia_conta'] ?> - Número <?= $movimentos[$i]['numero_conta'] ?> <br>
+                                                                                <b>Conta: </b><?= $movimentos[$i]['banco_conta'] ?> / Agência <?= $movimentos[$i]['agencia_conta'] ?> - Número <?= $movimentos[$i]['numero_conta'] ?> <br>
 
-                                                                            <b>Valor: </b> R$ <?= number_format($movimentos[$i]['valor_movimento'], 2, ',', '.') ?> <br>
+                                                                                <b>Valor: </b> R$ <?= number_format($movimentos[$i]['valor_movimento'], 2, ',', '.') ?> <br>
 
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                                                                            <button type="submit" name="btnExcluir" class="btn btn-primary">Confirmar</button>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                                                                <button type="submit" name="btnExcluir" class="btn btn-primary">Confirmar</button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
                                                             </form>
                                                         </td>
                                                     <?php } ?>
