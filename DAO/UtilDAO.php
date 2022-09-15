@@ -10,6 +10,13 @@ class UtilDAO
         }
     }
 
+    // Função para marcar data atual no Realizar Movimento
+    public static function DataAtual()
+    {
+        date_default_timezone_set('America/Sao_Paulo');
+        return date('Y-m-d');
+    }
+
     public static function CriarSessao($cod, $nome) 
     {
         self::IniciarSessao();

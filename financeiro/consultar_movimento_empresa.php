@@ -60,7 +60,7 @@ include_once '_head.php';
                             <select class="form-control" id="empresa" name="empresa">
                                 <option value="">Selecione</option>
                                 <?php foreach ($empresas as $item) { ?>
-                                    <option value="<?= $item['id_empresa'] ?>">
+                                    <option value="<?= $item['id_empresa'] ?>" <?= $empresa == $item['id_empresa'] ? 'selected' : '' ?>>
                                         <?= $item['nome_empresa'] ?> </option>
                                 <?php } ?>
                             </select>

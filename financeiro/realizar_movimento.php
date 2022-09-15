@@ -70,7 +70,7 @@ include_once '_head.php';
                         </div>
                         <div class="form-group" id="divMovimento_2">
                             <label>Data*</label>
-                            <input type="date" id="data" name="data" class="form-control" placeholder="Coloque a data do movimento" />
+                            <input type="date" id="data" name="data" value="<?= UtilDAO::DataAtual() ?>" class="form-control" placeholder="Coloque a data do movimento" />
                         </div>
                         <div class="form-group" id="divMovimento_3">
                             <label>Valor*</label>
@@ -113,7 +113,7 @@ include_once '_head.php';
                     <div class="col-md-12">
                         <div class="form-group">
                             <label>Observação (opcional)</label>
-                            <textarea class="form-control" name="obs" rows="3" maxlength="100"></textarea>
+                            <textarea class="form-control" name="obs" rows="3" maxlength="100" placeholder="Digite aqui suas observações."></textarea>
                         </div>
                         <button type="submit" onclick="return ValidarMovimento()" class="btn btn-success" name="btnGravar">Finalizar lançamento</button>
                     </div>

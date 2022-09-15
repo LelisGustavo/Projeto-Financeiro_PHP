@@ -221,7 +221,7 @@ class MovimentoDAO extends Conexao
                         WHERE tipo_movimento = 1
                         AND id_usuario = ?';
 
-        $sql = new PDOStatement;
+        $sql = new PDOStatement();
 
         $sql = $conexao->prepare($comando_sql);
 
@@ -243,7 +243,7 @@ class MovimentoDAO extends Conexao
                         WHERE tipo_movimento = 2
                         AND id_usuario = ?';
 
-        $sql = new PDOStatement;
+        $sql = new PDOStatement();
 
         $sql = $conexao->prepare($comando_sql);
 

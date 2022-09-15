@@ -147,6 +147,7 @@ function ValidarConsultaPeriodo() {
         alert("Preencher os campos em vermelho/vazio!");
         $("#tipo_movimento").focus();
         $("#divMovimento_1").addClass("has-error");
+        return false;
     } else {
         $("#divMovimento_1").removeClass("has-error").addClass("has-success");
     }
@@ -155,6 +156,7 @@ function ValidarConsultaPeriodo() {
         alert("Preencher os campos em vermelho/vazio!");
         $("#data_inicial").focus();
         $("#divMovimento_2").addClass("has-error");
+        return false;
     } else {
         $("#divMovimento_2").removeClass("has-error").addClass("has-success");
     }
@@ -163,6 +165,7 @@ function ValidarConsultaPeriodo() {
         alert("Preencher os campos em vermelho/vazio");
         $("#data_final").focus();
         $("#divMovimento_3").addClass("has-error");
+        return false;
     } else {
         $("#divMovimento_3").removeClass("has-error").addClass("has-success");
     }
@@ -183,6 +186,7 @@ function ValidarConsultaPeriodoEmpresa() {
         alert("Preencher os campos em vermelho/vazio!");
         $("#data_inicial").focus();
         $("#divMovimento_2").addClass("has-error");
+        return false;
     } else {
         $("#divMovimento_2").removeClass("has-error").addClass("has-success");
     }
@@ -191,6 +195,7 @@ function ValidarConsultaPeriodoEmpresa() {
         alert("Preencher os campos em vermelho/vazio");
         $("#data_final").focus();
         $("#divMovimento_3").addClass("has-error");
+        return false;
     } else {
         $("#divMovimento_3").removeClass("has-error").addClass("has-success");
     }
@@ -256,7 +261,7 @@ function ValidarCadastro() {
     }
 
     if ($("#senha").val().trim() != $("#repetir_senha").val().trim()) {
-        alert("A senha e o Repitir Senha não estão iguais!");
+        alert("A Senha e o Repitir Senha não estão iguais!");
         $("#repetir_senha").focus();
         $("#divCadastro_4").addClass("has-error");
         return false;
