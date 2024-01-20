@@ -74,7 +74,7 @@ values
 insert into tb_usuario
 (nome_usuario, email_usuario, senha_usuario, data_cadastro)
 values 
-('Gustavo Lélis', 'lelisgustavo@hotmail.com', 'lelis3003', '2022-06-21');
+('Gustavo Lélis', 'lelisgustavo@hotmail.com', 'lelis', '2022-06-21');
 
 insert into tb_usuario
 (nome_usuario, email_usuario, senha_usuario, data_cadastro)
